@@ -1,20 +1,23 @@
+PImage img;
+
 void setup()
 {
     randomSeed(0);
-    size(640, 480);
+    size(800, 600);
     background(0);
     fill(255);
+
+    /* @pjs preload="bonnie.jpg"; */
+    img = loadImage("bonnie.jpg");
+
     frameRate(10);
-//    noLoop();
-//    PFont fontA = loadFont("courier");
-//    textFont(fontA, 14);
 }
 
 int LAST_R = 127;
 int LAST_G = 127;
 int LAST_B = 127;
-int THRESHOLD1 = 5;
-int THRESHOLD2 = 6;
+int THRESHOLD1 = 10;
+int THRESHOLD2 = 10;
 
 int MIN_RANGE = 10;
 int MAX_RANGE = 250;
@@ -39,8 +42,8 @@ int random_color(int last_color, int threshold1, int threshold2)
 int rect_color = 0;
 int STATE = 0;
 
-    int startX = 20;
-    int startY = 20;
+    int startX = 320;
+    int startY = 560;
     int width = 10;
     int height = 10;
     int space = 30;
@@ -53,10 +56,10 @@ void flash_box(int n)
     int y = startY;
 
     noStroke();
-    fill(0, 0, rect_color);
+    fill(rect_color, 0, 0);
     rect(x, y, width+1, height+1);
 
-    stroke(0, 0, 255);
+    stroke(255, 0, 0);
     noFill();
     rect(x-5, y-5, width+10, height+10);
 
@@ -76,10 +79,10 @@ void draw_boxes(int num)
     int y = startY;
 
     for (int i = 0; i < num; ++i) {
-        fill(0, 0, 255);
+        fill(255, 0, 0);
         rect(x, y, width, height);
 
-        stroke(0, 0, 255);
+        stroke(255, 0, 0);
         noFill();
         rect(x-5, y-5, width+10, height+10);
 
@@ -92,13 +95,15 @@ void draw()
 
     background(0);
 
+    image(img, 240, 10);
+
     long d = day();
     long h = hour();
     long min = minute();
     long sec = second();
     long mil = millis();
 
-    long target_d = 20;
+    long target_d = 19;
     long target_hour = 12;
     long target_min = 0;
     long target_second = 0;
@@ -124,7 +129,7 @@ void draw()
 
     String[] str = "Remain: " + diff_day + " day, " + nf(diff_hour,2) + ":" + nf(diff_min,2) + ":" + nf(diff_sec,2);// + " " + nf(diff_mil,3) + "\"";
 
-    myfont = createFont("monospace", 16);
+    myfont = createFont("monospace", 32);
     textFont(myfont);
 
     int NEW_R = random_color(LAST_R, THRESHOLD1, THRESHOLD2);
@@ -136,11 +141,12 @@ void draw()
     LAST_B = NEW_B;
 
     fill(NEW_R, NEW_G, NEW_B);
-    text(str, 100, 100);
+    text(str, 200, 540);
 
     draw_boxes(STATE);
     flash_box(STATE);
 
+//    println(NEW_R + ", " + NEW_G + ", " + NEW_B);
 //    String[] fontlist = PFont.list();
 //    println(fontlist);
 }
