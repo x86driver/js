@@ -36,6 +36,57 @@ int random_color(int last_color, int threshold1, int threshold2)
     return random(min_range, max_range);
 }
 
+int rect_color = 0;
+int STATE = 0;
+
+    int startX = 20;
+    int startY = 20;
+    int width = 10;
+    int height = 10;
+    int space = 30;
+    int rect_color = 0;
+    int MAX_STATE = 5;
+
+void flash_box(int n)
+{
+    int x = startX + n*space;
+    int y = startY;
+
+    noStroke();
+    fill(0, 0, rect_color);
+    rect(x, y, width+1, height+1);
+
+    stroke(0, 0, 255);
+    noFill();
+    rect(x-5, y-5, width+10, height+10);
+
+    if (rect_color > 255) {
+        rect_color = 0;
+        ++STATE;
+        if (STATE > MAX_STATE)
+            STATE = 0;
+    } else {
+        rect_color += 25;
+    }
+}
+
+void draw_boxes(int num)
+{
+    int x = startX;
+    int y = startY;
+
+    for (int i = 0; i < num; ++i) {
+        fill(0, 0, 255);
+        rect(x, y, width, height);
+
+        stroke(0, 0, 255);
+        noFill();
+        rect(x-5, y-5, width+10, height+10);
+
+        x += space;
+    }
+}
+
 void draw()
 {
 
@@ -86,6 +137,9 @@ void draw()
 
     fill(NEW_R, NEW_G, NEW_B);
     text(str, 100, 100);
+
+    draw_boxes(STATE);
+    flash_box(STATE);
 
 //    String[] fontlist = PFont.list();
 //    println(fontlist);
